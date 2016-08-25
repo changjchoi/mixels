@@ -1,0 +1,85 @@
+{
+  "ServicePort" : ":8000",
+  "InputPath" : "/home1/dragon/data/addr-map-raw",
+  "OutputPath" : "/home1/dragon/data/addr-map",
+  "Mapping" : { 
+    "boundary/tl_scco_ctprvn.shp" : {
+      "File":"level1.bin", "FieldType": {
+        "CTPRVN_CD" : "level1_code"
+      }, "Projection" : "UTM_K3"
+    },
+    "boundary/sig.shp" : {
+      "File":"level2.bin", "FieldType": {
+        "SIG_CD" : "level2_code"
+      }, "Projection" : "UTM_K3"
+    }, 
+    "boundary/emd.shp" : {
+      "File":"level3a.bin", "FieldType": {
+        "EMD_CD" : "level3a_code"
+      }, "Projection" : "UTM_K3"
+    },
+    "boundary/li.shp" : {
+      "File":"level3b.bin", "FieldType": {
+        "LI_CD" : "level3a_code"
+      }, "Projection" : "UTM_K3"
+    },
+    "building1/*" : {
+      "File":"level71.bin", "FieldType": {
+        "BULD_MNNM" : "build_main_num", 
+        "BULD_NM" : "build_name", 
+        "BULD_NM_DC" : "build_name_dtl", 
+        "BULD_SLNO" : "build_sub_num", 
+        "EMD_CD" : "level3a_code", 
+        "GRO_FLO_CO" : "floor",
+        "LI_CD" : "level3b_code", 
+        "LNBR_MNNM" : "jibun_main_num", 
+        "LNBR_SLNO" : "jibun_sub_num", 
+        "MNTN_YN" : "is_mountain", 
+        "RN_CD" : "roadname_code", 
+        "SIG_CD" : "level2_code"
+      }, "Projection" : "UTM_K3"
+    },
+    "building2/*" : {
+      "File":"level72.bin", "FieldType": {
+        "BULD_MNNM" : "build_main_num", 
+        "BULD_NM" : "build_name", 
+        "BULD_NM_DC" : "build_name_dtl", 
+        "BULD_SLNO" : "build_sub_num", 
+        "EMD_CD" : "level3a_code", 
+        "GRO_FLO_CO" : "floor",
+        "LI_CD" : "level3b_code", 
+        "LNBR_MNNM" : "jibun_main_num", 
+        "LNBR_SLNO" : "jibun_sub_num", 
+        "MNTN_YN" : "is_mountain", 
+        "RN_CD" : "roadname_code", 
+        "SIG_CD" : "level2_code"
+      }, "Projection" : "UTM_K3"
+    }
+  },
+  "AreaLevel" : {
+    "level1idx.bin" : "Level1",
+    "level2idx.bin" : "Level2",
+    "level3aidx.bin" : "Level3A",
+    "level3bidx.bin" : "Level3B",
+    "level71idx.bin" : "Level7",
+    "level72idx.bin" : "Level7"
+  }, 
+  "RegionCodeFile" : { 
+    "RoadNameCode" : "roadname_code.csv",
+    "Level1" : "level1.csv", 
+    "Level2" : "level2.csv", 
+    "Level3A" : "level3a.csv", 
+    "Level3B" : "level3b.csv"
+  },
+  "LevelList" : [
+    {"Level":"Level1", "Priority":1}, 
+    {"Level":"Level2", "Priority":2}, 
+    {"Level":"Level3A", "Priority":3}, 
+    {"Level":"Level3B", "Priority":4},
+    {"Level":"Level4", "Priority":5}, 
+    {"Level":"Level5", "Priority":6}, 
+    {"Level":"Level6", "Priority":7},
+    {"Level":"Level7", "Priority":8}
+  ],
+  "TSVFile" : ["address0.tsv", "address1.tsv", "address2.tsv", "address3.tsv"]
+}

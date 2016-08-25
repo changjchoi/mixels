@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polygon</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 90%;
+        width: 100%;
+      }
+      #info {
+        height: 10%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"> </div>
+    <div id="info">
+      <input type="text" id="polygon_id" placeholder="Insert Polygon Id">
+      <input type="submit" name="Send" value="Send" onclick="UpdateMap()">
+    </div>
+    <script>
+
+// This example creates a simple polygon representing the Bermuda Triangle.
+var map;
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 15,
+    center: {lat: 37.49, lng: 127.04},
+    mapTypeId: google.maps.MapTypeId.TERRAIN
+  });
+}
+
+// get the polygon points from server
+function getPoint() {
+  var result = [];
+  // get polygon id ?
+  var polygon_id = document.getElementById('polygon_id').value; 
+  // check polygon_id only number !
+  if (/^[0-9]*$/g.test(polygon_id)) {
+  } else {
+    return result;
+  }
+  // null check?
+
+  var xmlhttp = new XMLHttpRequest();
+  var url = "http://localhost:8002/getpoint?id=" + polygon_id;
+  // check json format 
+  //var test_value = "[{\"lat\":\"32\", \"lng\":\"127\"}]";
+  //var test_potins = JSON.parse(test_value);
+  xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      // set the value
+      result = JSON.parse(xmlhttp.responseText);
+    }
+  };
+  xmlhttp.open("GET", url, false);
+  xmlhttp.send();
+  return result;
+}
+
+function UpdateMap() {
+  var points = getPoint();
+  if (points.length == 0) {
+    return
+  }
+  var new_center = points[0];
+  // http://stackoverflow.com/questions/2437683/google-maps-api-v3-can-i-setzoom-after-fitbounds
+  var bounds = new google.maps.LatLngBounds();
+  // ?? fitBounds
+  map.fitBounds(bounds);
+  var listener = google.maps.event.addListener(map, "idle", function() { 
+      if (map.getZoom() > 16) map.setZoom(16); 
+        google.maps.event.removeListener(listener); 
+  });
+  //
+  map.setCenter(new_center);
+  map.setZoom(15)
+
+  // Construct the polygon.
+  var bermudaTriangle = new google.maps.Polygon({
+    paths: points,
+    strokeColor: '#FF0000',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#FF0000',
+    fillOpacity: 0.35
+  });
+  bermudaTriangle.setMap(map);
+}
+
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5okWXgb9ZTLPRwEnVo6Gd5JSYNtQASTU&signed_in=true&callback=initMap"></script>
+  </body>
+</html>
+
